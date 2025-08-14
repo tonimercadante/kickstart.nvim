@@ -84,6 +84,11 @@ I hope you enjoy your Neovim journey,
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
 
+-- custom things
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.opt.termguicolors = true
+
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -91,7 +96,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -205,6 +210,9 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
+-- custom keymaps
+vim.keymap.set('n', '<leader>e', ':NvimTreeFocus<CR>', { desc = 'Focus File Explorer', silent = true })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -298,6 +306,43 @@ require('lazy').setup({
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
+  {
+    'karb94/neoscroll.nvim',
+    opts = {
+      mappings = { -- Keys to be mapped to their corresponding default scrolling animation
+        '<C-u>',
+        '<C-d>',
+        '<C-b>',
+        '<C-f>',
+        '<C-y>',
+        '<C-e>',
+        'zt',
+        'zz',
+        'zb',
+      },
+      hide_cursor = false, -- Hide cursor while scrolling
+      stop_eof = true, -- Stop at <EOF> when scrolling downwards
+      respect_scrolloff = false, -- Stop scrolling when cursor reaches scrolloff margin
+      cursor_scrolls_alone = true, -- Cursor keeps scrolling even if window can't scroll further
+      duration_multiplier = 1.0, -- Global duration multiplier
+      easing = 'linear', -- Easing function
+      pre_hook = nil, -- Function before animation starts
+      post_hook = nil, -- Function after animation ends
+      performance_mode = false, -- Disable performance mode
+      ignored_events = { 'WinScrolled', 'CursorMoved' },
+    },
+  },
+  {
+    'nvim-tree/nvim-tree.lua',
+    version = '*',
+    lazy = false,
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function()
+      require('nvim-tree').setup {}
+    end,
+  },
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
@@ -894,7 +939,7 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd.colorscheme 'tokyonight-day'
     end,
   },
 
