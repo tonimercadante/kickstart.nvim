@@ -172,6 +172,12 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- [[ CUSTOM vim.o ]]
+-- vim.o.foldmethod = 'expr'
+-- vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+-- vim.o.foldenable = true -- enable folding by default
+-- vim.o.foldlevel = 99
+--
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -233,6 +239,32 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function()
     vim.hl.on_yank()
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  group = vim.api.nvim_create_augroup('TS_FOLD_WORKAROUND', {}),
+  callback = function(args)
+    local bufnr = args.buf
+    -- Only set up folding for languages that Treesitter supports
+    local lang = vim.treesitter.language.get_lang(vim.bo[bufnr].filetype)
+    if lang and pcall(vim.treesitter.get_parser, bufnr, lang) then
+      vim.schedule(function()
+        if vim.api.nvim_buf_is_valid(bufnr) then
+          -- Use vim.wo for window options and vim.bo for buffer options
+          vim.wo.foldmethod = 'expr'
+          vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
+          vim.wo.foldenable = true
+          vim.wo.foldlevel = 99
+          -- Wait a moment then recompute folds
+          vim.defer_fn(function()
+            if vim.api.nvim_buf_is_valid(bufnr) then
+              vim.cmd 'normal! zx'
+            end
+          end, 100)
+        end
+      end)
+    end
   end,
 })
 
@@ -1027,7 +1059,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'javascript', 'typescript' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
