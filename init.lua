@@ -214,6 +214,14 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- custom keymaps
 vim.keymap.set('n', '<leader>e', ':NvimTreeFocus<CR>', { desc = 'Focus File Explorer', silent = true })
 
+-- NORMAL mode
+vim.keymap.set('n', '<A-j>', ':m .+1<CR>==', { noremap = true, silent = true }) -- move line DOWN
+vim.keymap.set('n', '<A-k>', ':m .-2<CR>==', { noremap = true, silent = true }) -- move line UP
+
+-- VISUAL mode
+vim.keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv", { noremap = true, silent = true }) -- move block DOWN
+vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { noremap = true, silent = true }) -- move block UP
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
