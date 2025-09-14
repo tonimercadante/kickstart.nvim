@@ -88,6 +88,12 @@ P.S. You can delete this when you're done too. It's your config now! :)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
+vim.cmd [[
+  if !hlexists("IncSearch")
+    highlight IncSearch cterm=reverse gui=reverse
+  endif
+]]
+local yank_group = vim.api.nvim_create_augroup('HighlightYank', { clear = true })
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
@@ -235,10 +241,13 @@ vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { noremap = true, silent = true
 --  Try it with `yap` in normal mode
 --  See `:help vim.hl.on_yank()`
 vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  group = yank_group,
   callback = function()
-    vim.hl.on_yank()
+    -- Safe call to highlight.on_yank to avoid errors
+    local ok, _ = pcall(vim.highlight.on_yank, { higroup = 'IncSearch', timeout = 200 })
+    if not ok then
+      vim.notify('Highlight on yank failed (terminal/colorscheme issue)', vim.log.levels.WARN)
+    end
   end,
 })
 
@@ -393,7 +402,10 @@ require('lazy').setup({
     lazy = false,
     priority = 1000,
     config = function()
-      require('cyberdream').setup {}
+      require('cyberdream').setup {
+        variant = 'auto', -- "default", "light", or "auto"
+        transparent = true,
+      }
       -- apply theme
       -- vim.cmd 'colorscheme cyberdream'
     end,
