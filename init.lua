@@ -395,7 +395,7 @@ require('lazy').setup({
     config = function()
       require('cyberdream').setup {}
       -- apply theme
-      vim.cmd 'colorscheme cyberdream'
+      -- vim.cmd 'colorscheme cyberdream'
     end,
   },
   {
@@ -805,6 +805,7 @@ require('lazy').setup({
             },
           },
         },
+        gopls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -883,6 +884,7 @@ require('lazy').setup({
         json = { 'prettierd', 'prettier', stop_after_first = true },
         html = { 'prettierd', 'prettier', stop_after_first = true },
         css = { 'prettierd', 'prettier', stop_after_first = true },
+        go = { 'goimports', 'gofmt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -1001,15 +1003,17 @@ require('lazy').setup({
     config = function()
       ---@diagnostic disable-next-line: missing-fields
       require('tokyonight').setup {
+        style = 'day',
         styles = {
           comments = { italic = false }, -- Disable italics in comments
         },
+        transparent = true,
       }
 
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      -- vim.cmd.colorscheme 'tokyonight-day'
+      -- vim.cmd.colorscheme 'tokyonight'
     end,
   },
 
@@ -1126,6 +1130,7 @@ require('lazy').setup({
     },
   },
 })
-
+vim.g.tokyo_night_variant = 'night' -- or "light" or "night" or "storm"
+vim.cmd 'colorscheme zed-tokyo-night'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

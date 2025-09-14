@@ -1,0 +1,205 @@
+-- Zed-style Tokyo Night theme for Neovim
+-- Save this file as: ~/.config/nvim/colors/zed-tokyo-night.lua
+
+local colors = {
+  -- Main background and foreground (Zed-style)
+  bg = '#1a1b26', -- Slightly darker background like Zed
+  bg_alt = '#16161e', -- Darker alternative background
+  bg_highlight = '#292e42', -- Selection/highlight background
+  bg_search = '#3d59a1', -- Search highlight
+  bg_visual = '#33467c', -- Visual selection
+
+  fg = '#c0caf5', -- Main text color
+  fg_alt = '#9ece6a', -- Alternative foreground
+  fg_gutter = '#3b4261', -- Gutter/line numbers
+
+  -- Zed-specific vibrant syntax colors
+  comment = '#565f89', -- Comments (more muted)
+  cyan = '#7dcfff', -- Cyan (functions, methods)
+  blue = '#7aa2f7', -- Blue (keywords)
+  purple = '#bb9af7', -- Purple (types, classes)
+  magenta = '#c678dd', -- Magenta (strings in some contexts)
+  orange = '#ff9e64', -- Orange (numbers, constants)
+  yellow = '#e0af68', -- Yellow (warnings, some strings)
+  green = '#9ece6a', -- Green (strings, success)
+  red = '#f7768e', -- Red (errors, deletion)
+  pink = '#ffc0cb', -- Pink accent
+
+  -- UI Elements (Zed-style)
+  border = '#27a1b9', -- Border color
+  line_nr = '#3b4261', -- Line numbers
+  cursor_line = '#1f2335', -- Current line background
+  selection = '#33467c', -- Text selection
+  search = '#3d59a1', -- Search matches
+  diff_add = '#20303b', -- Git diff additions
+  diff_change = '#1f2937', -- Git diff changes
+  diff_delete = '#37222c', -- Git diff deletions
+
+  -- Status line and tabs
+  statusline_bg = '#16161e',
+  tabline_bg = '#1f2335',
+
+  -- Special Zed-like accents
+  accent = '#7dcfff', -- Accent color for UI elements
+  warning = '#e0af68', -- Warnings
+  error = '#f7768e', -- Errors
+  info = '#7aa2f7', -- Info
+  hint = '#1abc9c', -- Hints
+}
+
+local function setup()
+  -- Clear existing highlights
+  vim.cmd 'highlight clear'
+  if vim.fn.exists 'syntax_on' then
+    vim.cmd 'syntax reset'
+  end
+
+  vim.o.termguicolors = true
+  vim.g.colors_name = 'zed-tokyo-night'
+
+  -- Helper function to set highlights
+  local function hl(group, opts)
+    vim.api.nvim_set_hl(0, group, opts)
+  end
+
+  -- Editor highlights
+  hl('Normal', { fg = colors.fg, bg = colors.bg })
+  hl('NormalFloat', { fg = colors.fg, bg = colors.bg_alt })
+  hl('NormalNC', { fg = colors.fg, bg = colors.bg })
+  hl('LineNr', { fg = colors.line_nr })
+  hl('CursorLine', { bg = colors.cursor_line })
+  hl('CursorLineNr', { fg = colors.cyan, bold = true })
+  hl('ColorColumn', { bg = colors.bg_highlight })
+  hl('Cursor', { fg = colors.bg, bg = colors.fg })
+  hl('Visual', { bg = colors.selection })
+  hl('Search', { bg = colors.search, fg = colors.bg })
+  hl('IncSearch', { bg = colors.orange, fg = colors.bg })
+
+  -- Syntax highlighting (Zed-style vibrant colors)
+  hl('Comment', { fg = colors.comment, italic = true })
+  hl('Constant', { fg = colors.orange })
+  hl('String', { fg = colors.green })
+  hl('Character', { fg = colors.green })
+  hl('Number', { fg = colors.orange })
+  hl('Boolean', { fg = colors.orange })
+  hl('Float', { fg = colors.orange })
+  hl('Identifier', { fg = colors.cyan })
+  hl('Function', { fg = colors.blue, bold = true })
+  hl('Statement', { fg = colors.purple })
+  hl('Conditional', { fg = colors.purple })
+  hl('Repeat', { fg = colors.purple })
+  hl('Label', { fg = colors.purple })
+  hl('Operator', { fg = colors.cyan })
+  hl('Keyword', { fg = colors.purple, bold = true })
+  hl('Exception', { fg = colors.purple })
+  hl('PreProc', { fg = colors.cyan })
+  hl('Include', { fg = colors.blue })
+  hl('Define', { fg = colors.purple })
+  hl('Macro', { fg = colors.cyan })
+  hl('PreCondit', { fg = colors.cyan })
+  hl('Type', { fg = colors.blue })
+  hl('StorageClass', { fg = colors.purple })
+  hl('Structure', { fg = colors.purple })
+  hl('Typedef', { fg = colors.purple })
+  hl('Special', { fg = colors.cyan })
+  hl('SpecialChar', { fg = colors.cyan })
+  hl('Tag', { fg = colors.blue })
+  hl('Delimiter', { fg = colors.cyan })
+  hl('SpecialComment', { fg = colors.comment })
+  hl('Debug', { fg = colors.red })
+
+  -- Treesitter highlights (enhanced for Zed-like appearance)
+  hl('@variable', { fg = colors.fg })
+  hl('@variable.builtin', { fg = colors.red })
+  hl('@variable.parameter', { fg = colors.orange })
+  hl('@variable.member', { fg = colors.cyan })
+  hl('@constant', { fg = colors.orange })
+  hl('@constant.builtin', { fg = colors.orange })
+  hl('@constant.macro', { fg = colors.cyan })
+  hl('@string', { fg = colors.green })
+  hl('@string.escape', { fg = colors.cyan })
+  hl('@string.special', { fg = colors.blue })
+  hl('@character', { fg = colors.green })
+  hl('@number', { fg = colors.orange })
+  hl('@boolean', { fg = colors.orange })
+  hl('@float', { fg = colors.orange })
+  hl('@function', { fg = colors.blue, bold = true })
+  hl('@function.builtin', { fg = colors.cyan })
+  hl('@function.macro', { fg = colors.cyan })
+  hl('@function.method', { fg = colors.blue })
+  hl('@constructor', { fg = colors.purple })
+  hl('@operator', { fg = colors.cyan })
+  hl('@keyword', { fg = colors.purple, bold = true })
+  hl('@keyword.function', { fg = colors.purple })
+  hl('@keyword.operator', { fg = colors.purple })
+  hl('@keyword.return', { fg = colors.purple })
+  hl('@conditional', { fg = colors.purple })
+  hl('@repeat', { fg = colors.purple })
+  hl('@exception', { fg = colors.purple })
+  hl('@type', { fg = colors.blue })
+  hl('@type.builtin', { fg = colors.blue })
+  hl('@type.definition', { fg = colors.blue })
+  hl('@attribute', { fg = colors.cyan })
+  hl('@property', { fg = colors.cyan })
+  hl('@label', { fg = colors.purple })
+  hl('@namespace', { fg = colors.blue })
+  hl('@tag', { fg = colors.blue })
+  hl('@tag.attribute', { fg = colors.orange })
+  hl('@tag.delimiter', { fg = colors.cyan })
+
+  -- UI Elements
+  hl('Pmenu', { fg = colors.fg, bg = colors.bg_alt })
+  hl('PmenuSel', { fg = colors.bg, bg = colors.blue })
+  hl('PmenuSbar', { bg = colors.bg_alt })
+  hl('PmenuThumb', { bg = colors.fg_gutter })
+  hl('StatusLine', { fg = colors.fg, bg = colors.statusline_bg })
+  hl('StatusLineNC', { fg = colors.fg_gutter, bg = colors.statusline_bg })
+  hl('TabLine', { fg = colors.fg_gutter, bg = colors.tabline_bg })
+  hl('TabLineFill', { bg = colors.tabline_bg })
+  hl('TabLineSel', { fg = colors.fg, bg = colors.bg })
+  hl('VertSplit', { fg = colors.border })
+  hl('WinSeparator', { fg = colors.border })
+
+  -- Git/Diff
+  hl('DiffAdd', { bg = colors.diff_add })
+  hl('DiffChange', { bg = colors.diff_change })
+  hl('DiffDelete', { bg = colors.diff_delete, fg = colors.red })
+  hl('DiffText', { bg = colors.diff_change })
+
+  -- LSP
+  hl('DiagnosticError', { fg = colors.error })
+  hl('DiagnosticWarn', { fg = colors.warning })
+  hl('DiagnosticInfo', { fg = colors.info })
+  hl('DiagnosticHint', { fg = colors.hint })
+  hl('DiagnosticSignError', { fg = colors.error })
+  hl('DiagnosticSignWarn', { fg = colors.warning })
+  hl('DiagnosticSignInfo', { fg = colors.info })
+  hl('DiagnosticSignHint', { fg = colors.hint })
+
+  -- Telescope (if installed)
+  hl('TelescopeSelection', { fg = colors.fg, bg = colors.bg_highlight })
+  hl('TelescopeMatching', { fg = colors.accent, bold = true })
+  hl('TelescopeBorder', { fg = colors.border })
+
+  -- NvimTree (if installed)
+  hl('NvimTreeFolderIcon', { fg = colors.blue })
+  hl('NvimTreeFolderName', { fg = colors.blue })
+  hl('NvimTreeOpenedFolderName', { fg = colors.blue, bold = true })
+  hl('NvimTreeSpecialFile', { fg = colors.purple })
+  hl('NvimTreeExecFile', { fg = colors.green })
+
+  -- Which-key (if installed)
+  hl('WhichKey', { fg = colors.purple })
+  hl('WhichKeyDesc', { fg = colors.fg })
+  hl('WhichKeyGroup', { fg = colors.blue })
+  hl('WhichKeySeparator', { fg = colors.comment })
+end
+
+-- Auto-setup when sourced
+setup()
+
+-- Export the setup function and colors for advanced users
+return {
+  setup = setup,
+  colors = colors,
+}
